@@ -1,9 +1,24 @@
 import React from 'react'
 import styles from './authlink.module.css'
+import Link from 'next/link'
 
 const AuthLinks = () => {
+
+  ///temporaly used
+  const status = "notauthentification"
+
   return (
-    <div className={styles.container}>AuthLinks</div>
+    <>
+      {status==="notauthentification" ? (
+        <Link href="/login">Login</Link>) : 
+        (
+          <>
+            <Link href="/write">Write</Link>
+            <span>Logout</span>
+          </>        
+        )
+      }
+    </>
   )
 }
 
