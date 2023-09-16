@@ -4,7 +4,7 @@
 
 .burger{
     width: 20px;
-    height: 19px;
+    height: 20px;
     display: none;
     flex-direction: column;
     justify-content: space-between;
