@@ -1,31 +1,25 @@
 import React from 'react'
 import styles from './menu.module.css'
-import Link from 'next/link'
-import Image from 'next/image'
+
+
+import MenuPosts from '../menuPosts/MenuPosts'
+import MenuCategory from '../memucategory/MenuCategory'
 
 const Menu = () => {
   return (
     <div className={styles.container}>
-      <h2>{"What's hot"}</h2>
-      <h1>Most Popular</h1>
-      <div className={styles.items}>
-        <Link href="/" className={styles.item}>
-          <div className={styles.imageContainer}>
-            <Image src="/p1.jpeg" alt="" fill className={styles.image}/>
-          </div>
-          <div className={styles.textContainer}>
-            <span className={`${styles.category} ${styles.travel}`}>
-            Travel
-            </span>
-            <h3>
-              LALALA Rolem lUremLALALA Rolem lUremLALALA Rolem lUremLALALA 
-              Rolem lUremLALALA Rolem lUremLALALA Rolem lUremLALALA Rolem 
-              lUremLALALA d564fs6543e To them shit on it okat good bye.
-              Rolem lUremLALALA Rolem lUremLALALA Rolem lUremLALALA Rolem lUrem
-            </h3>
-          </div>
-        </Link>
-      </div>
+      <h2 className={styles.subtitle}>{"What's hot"}</h2>
+      <h1 className={styles.title}>Most Popular</h1>
+
+      <MenuPosts withImage={false}/>
+
+      <h2 className={styles.subtitle}>Discover by topics</h2>
+      <h1 className={styles.title}>Categories</h1>
+
+      <MenuCategory/>
+      <h2 className={styles.subtitle}>Chosen by Editor</h2>
+      <h1 className={styles.title}>Editor Picks</h1>
+      <MenuPosts withImage={true}/>
     </div>
   )
 }
