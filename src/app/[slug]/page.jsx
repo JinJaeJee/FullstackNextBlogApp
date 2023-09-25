@@ -1,6 +1,7 @@
 import Menu from "@/components/menu/Menu"
 import styles from "./singlePage.module.css"
 import Image from "next/image"
+import Comments from "@/components/comments/Comments"
 
 const Singlepage = () => {
   return (
@@ -75,8 +76,9 @@ const Singlepage = () => {
                         release of Letraset sheets containing Lorem Ipsum passages, and more recently 
                         with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
                     </p>
-
-
+                </div>
+                <div className={styles.comment}>
+                    <Comments/>
                 </div>
             </div>
             <Menu/>
