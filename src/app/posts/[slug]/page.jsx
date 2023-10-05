@@ -3,80 +3,53 @@ import styles from "./singlePage.module.css"
 import Image from "next/image"
 import Comments from "@/components/comments/Comments"
 
-const Singlepage = () => {
+
+const getData = async (slug) => {
+    const res = await fetch(
+      `http://localhost:3000/api/posts/${slug}`,
+      {
+        cache: "no-store",
+      }
+    );
+  
+    if (!res.ok) {
+      throw new Error("Failed");
+    }
+    return res.json();
+  }
+
+const Singlepage = async ({params}) => {
+
+    const { slug } = params;
+    const data = await getData(slug)
+
   return (
     <div className={styles.container}>
         <div className={styles.infoContainer}>
             <div className={styles.textContainer}>
-                <h1 className={styles.title}> Lorem ipsun dolor sit amet again pls go adipsicing elits.</h1>
+                <h1 className={styles.title}>
+                 {data?.title}
+                </h1>
                 <div className={styles.user}>
-                    <div className={styles.userImageContainer}>
-                        <Image src="/p1.jpeg" alt="" fill className={styles.avatar}/>
-                    </div>                
+                    {data?.user?.image && (<div className={styles.userImageContainer}>
+                        <Image src={data.user.image} alt="" fill className={styles.avatar}/>
+                    </div>)}                
                     <div className={styles.userTextContianer}>
-                        <span className={styles.username}> John Kador </span> 
+                        <span className={styles.username}>{data?.user.name}</span> 
                         <span className={styles.date}> 25 April 2023 </span> 
                     </div>
                 </div>
             </div>
-            <div className={styles.imageContainer}>
-                <Image src="/p1.jpeg" alt="" fill className={styles.image}/>
-            </div>
+            {data?.img && (<div className={styles.imageContainer}>
+                <Image src={data.img} alt="" fill className={styles.image}/>
+            </div>)}
         </div>
         <div className={styles.content}>
             <div className={styles.post}>
-                <div className={styles.desc}>
-                    <p>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-                        Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, 
-                        when an unknown printer took a galley of type and scrambled it to make a type 
-                        specimen book. It has survived
-                        not only five centuries, but also the leap into electronic typesetting, 
-                        remaining essentially unchanged. It was popularised in the 1960s with the 
-                        release of Letraset sheets containing Lorem Ipsum passages, and more recently 
-                        with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                    </p>
-                    <p>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-                        Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, 
-                        when an unknown printer took a galley of type and scrambled it to make a type 
-                        specimen book. It has survived
-                        not only five centuries, but also the leap into electronic typesetting, 
-                        remaining essentially unchanged. It was popularised in the 1960s with the 
-                        release of Letraset sheets containing Lorem Ipsum passages, and more recently 
-                        with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                    </p>
-                    <p>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-                        Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, 
-                        when an unknown printer took a galley of type and scrambled it to make a type 
-                        specimen book. It has survived
-                        not only five centuries, but also the leap into electronic typesetting, 
-                        remaining essentially unchanged. It was popularised in the 1960s with the 
-                        release of Letraset sheets containing Lorem Ipsum passages, and more recently 
-                        with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                    </p>
-                    <p>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-                        Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, 
-                        when an unknown printer took a galley of type and scrambled it to make a type 
-                        specimen book. It has survived
-                        not only five centuries, but also the leap into electronic typesetting, 
-                        remaining essentially unchanged. It was popularised in the 1960s with the 
-                        release of Letraset sheets containing Lorem Ipsum passages, and more recently 
-                        with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                    </p>
-                    <p>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-                        Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, 
-                        when an unknown printer took a galley of type and scrambled it to make a type 
-                        specimen book. It has survived
-                        not only five centuries, but also the leap into electronic typesetting, 
-                        remaining essentially unchanged. It was popularised in the 1960s with the 
-                        release of Letraset sheets containing Lorem Ipsum passages, and more recently 
-                        with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                    </p>
-                </div>
+                <div 
+                    className={styles.desc} 
+                    dangerouslySetInnerHTML={{ __html: data?.desc }}
+                />
                 <div className={styles.comment}>
                     <Comments/>
                 </div>
