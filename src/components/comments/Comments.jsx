@@ -1,9 +1,31 @@
+"use client"
+
 import Image from "next/image"
 import styles from "./comments.module.css"
 import Link from "next/link"
+import useSWR from "swr"
+import { useSession } from "next-auth/react"
 
-const Comments = () => {
-    const status = "authenticated"
+
+const fetcher = async (url) => {
+  const res = await fetch(url)
+
+  const data = await res.json()
+
+  if(!res.ok){
+    const error = new Error(data.message);
+    throw error;
+  }
+
+  return data
+}
+
+const Comments = ({postSlug}) => {
+    const status = useSession()
+
+    const { data, isLoading } = useSWR(`http://localhost:3000/api/comments?postSlug=${postSlug}`, fetcher)
+
+
   return (
     <div className={styles.container}>
         <h1 className={styles.title}>Comments</h1>
@@ -17,21 +39,18 @@ const Comments = () => {
             <Link href="/login"> login to write a comment </Link>
             )}
             <div className={styles.comments}>
-              <div className={styles.comment}>
+              {isLoading ? "loading" : data.map((item)=> ( <div className={styles.comment} key={item.id}>
                 <div className={styles.user}>
-                  <Image src="/p1.jpeg" alt="" width={50} height={50} className={styles.img}/>
+                  {item?.user?.image && (<Image src={item.user.image} alt="" width={50} height={50} className={styles.img}/>)}
                   <div className={styles.userInfo}>
-                    <span className={styles.username}> John Dodo </span>
-                    <span className={styles.date}> 01.01.2023 </span>
+                    <span className={styles.username}>{item.user.name}</span>
+                    <span className={styles.date}>{item.createdAt}</span>
                   </div>
                 </div>
                 <p className={styles.decs}>
-                  It is a long established fact that a reader will be distracted by the
-                  readable content of a page when looking at its layout. The point of
-                  using Lorem Ipsum is that it has a more-or-less normal distribution
-                  of letters, as opposed to using Content here, content here making it.
+                  {item.desc}
                 </p>
-              </div>
+              </div>))}
             </div>
     </div>
   )
